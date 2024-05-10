@@ -1,0 +1,212 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <title>Foodkuy - Mobile HTML Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <link rel="icon" href="~/favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="~/manifest.json" />
+    <!-- Bootstrap v4.3.1 CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/inner-content.css">
+    <link rel="stylesheet" href="~/css/outer-content.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/normalize.css">
+    <link rel="stylesheet" href="~/css/theme.css">
+    <link rel="stylesheet" href="~/css/theme/themelibrary.css">
+    <!-- Slick CSS -->
+    <link rel="stylesheet" type="text/css" href="~/lib/slick/slick/slick.css">
+    <link rel="stylesheet" type="text/css" href="~/lib/slick/slick/slick-theme.css">
+    <!-- Magnific Popup core CSS file -->
+    <link rel="stylesheet" href="~/lib/Magnific-Popup-master/dist/magnific-popup.css">
+
+    @RenderSection("Styles", required: false)
+
+    
+    <!-- Font Awesome Free 5.10.2 JS -->
+    <script defer src="~/lib/fontawesome-free-5.10.2-web/js/brands.js"></script>
+    <script defer src="~/lib/fontawesome-free-5.10.2-web/js/solid.js"></script>
+    <script defer src="~/lib/fontawesome-free-5.10.2-web/js/fontawesome.js"></script>
+</head>
+<body class="default">
+
+    <!-- Preloading -->
+    <div class="preloading">
+        <div class="wrap-preload">
+            <div class="cssload-loader"></div>
+        </div>
+    </div>
+    <!-- .Preloading -->
+    <div class="wrapper">
+        <!-- Sidebar left -->
+        <nav id="sidebarright" class="sidenav">
+
+            <div class="sidebar-header">
+                <h3>Shopping Cart</h3>
+                <div id="dismiss">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+
+
+            <!----------------------------------------------------------------------------------------->
+           
+            <div class="shopping-cart-body">
+                <!--<form style="width:100%;" asp-controller="Orders" asp-action="Send">-->
+
+                <div class="shopping-cart-list">
+                    <div class="cart-empty-message">Your Cart is Empty</div>
+                    <!-------------------------------------LIST ITEMS--------------------------------------------->
+
+                </div>
+
+
+                <!--List End-->
+                <!--<div class="shopping-cart-total shadow-lg">
+        <div class="shopping-cart-total-inner">
+
+            <div>Sommaire</div>
+            <div class="shopping-cart-total-details-container">
+                <div class="shopping-cart-total-details">
+                    <div class="shopping-cart-total-subdetails">
+                        <div>Subtotal</div>
+                        <div>4.5$</div>
+                    </div>
+                    <div class="shopping-cart-total-subdetails">
+                        <div>Discount</div>
+                        <div>-2.3$</div>
+                    </div>
+                    <div class="shopping-cart-total-subdetails">
+                        <div>Tax</div>
+                        <div>0.52$</div>
+                    </div>
+                    <div class="shopping-cart-total-subdetails total">
+                        <div>Total</div>
+                        <div>2.72$</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+                <!--<input class="SendButton" type="button" onclick="send()" class="btn btn-primary" value="send">Send</input>-->
+
+                <!-- </form>-->
+            </div>
+                <div class="cart-total">
+                    <div class="cart-total-inner">
+                        <div>Total</div>
+                        <div class="cart-total-num">0$</div>
+                    </div>
+                </div>
+
+</div>
+
+    <!----------------------------------------------------------------------------------------->
+    </nav>
+    <!-- .Sidebar left -->
+    <!-- Sidebar right -->
+    <nav id="sidebarleft" class="sidenav">
+        <div id="dismiss">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="sidebar-header">
+            <h3>Let's eat!</h3>
+        </div>
+        <div class="search-form">
+            <div class="search-wrapper ">
+                <button class="ssubmit" onclick="search()" type="submit" name="search_submit"><i class="fas fa-search"></i></button>
+                <input id="search">
+            </div>
+            @await Html.PartialAsync("_CategoriesPartial")
+        </div>
+    </nav>
+    <!-- .Sidebar right-->
+    <!-- Page content  -->
+    <div id="content">
+        <!-- Header  -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-header">
+            <div class="container-fluid">
+                <a href="#sidebarright" type="button" id="sidebarrightbutton" class="btn">
+                    <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+                    <div class="cart-count"><div class="cart-count-num">0</div></div>
+                </a>
+                <div class="logo">Le Phenicien</div>
+                <a href="#sidebarleft" type="button" id="sidebarleftbutton" class="btn">
+                    <i class="fas fa-align-left"></i>
+                </a>
+            </div>
+        </nav>
+        <!-- .Header  -->
+        <!-- Content Wrap  -->
+        @RenderBody()
+        <!-- .Content wrap  -->
+        <!-- Footer  -->
+        <div class="footer">
+            <div class="footer-heading">Follow Us</div>
+            <div class="socmed">
+                <div class="socmed-line">
+                    <div class="socmed-item">
+                        <a href="#" class="si-icon"> <i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                <div class="socmed-line">
+                    <div class="socmed-item">
+                        <a href="#" class="si-icon"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="socmed-line">
+                    <div class="socmed-item">
+                        <a href="#" class="si-icon"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="socmed-line">
+                    <div class="socmed-item">
+                        <a href="#" class="si-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- .Footer  -->
+    </div>
+    <!-- .Page content  -->
+
+    <div class="overlay"></div>
+
+    <!-- Optional JavaScript -->
+   
+    <!-- jQuery v3.4.1 -->
+    <script src="~/lib/jquery/jquery-3.4.1.min.js"></script>
+    <script src="~/lib/jquery/jquery.mobile-1.5.0-rc1.min.js"></script>
+    <!--  Bootstrap v4.3.1 JS -->
+    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Magnific Popup core JS file -->
+    <script src="~/lib/Magnific-Popup-master/dist/jquery.magnific-popup.js"></script>
+    <!-- Slick JS -->
+    <script src="~/lib/slick/slick/slick.min.js"></script>
+    <script src="~/lib/jquery/bootbox.min.js"></script>
+    <script src="~/lib/jquery/bootbox.locales.min.js"></script>
+    <!--  Custom JS -->
+    <script>
+        var cart_list;
+        var CartItem = function () {
+            this.Id = null,
+                this.Name = null,
+                this.Price = null,
+                this.Count = null,
+                this.Image = null,
+                this.Description = null
+        };
+    </script>
+    <script src="~/js/theme.js"></script>
+    <script src="~/js/inner-content.js"></script>
+    <script src="~/js/outer-content.js"></script>
+    <script src="~/js/site.js"></script>
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

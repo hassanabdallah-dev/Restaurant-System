@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Phenicienn.Models.AdminUser.AdminUser> SignInManager
+@inject UserManager<Phenicienn.Models.AdminUser.AdminUser> UserManager
+
+@if (User.Identity.IsAuthenticated)  
+{
+    <div class="dropdown-item">
+        Hello @User.Identity.Name!
+    </div>
+    <div class="dropdown-divider"></div>
+    <div class="dropdown-item">
+        <a asp-area="Account" asp-action="Logout" asp-controller="Login" class="btn text-dark">Logout</a>
+    </div>
+}
+else
+{
+    <div class="dropdown-item">
+        <a class="btn text-dark" href="/Account/Register/Index">Register</a>
+    </div>
+    <div class="dropdown-item">
+        <a class=" btn text-dark" href="/Account/Login/Index">Login</a>
+    </div>
+}

@@ -1,0 +1,13 @@
+{
+"background-color": "#b70021",
+"description": "Food Menu app",
+"display": "standalone",
+"icons": [{
+    "src": "favicon.png",
+    "sizes": "200x200",
+    "type":" image/png"
+}],
+"name": "Le Phenicien Food Menu",
+"short_name": "Le Phenicien",
+"start_url": "/"
+}

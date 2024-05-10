@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Phenicienn.Areas.Admin.ViewModels.ItemViewModel>
+
+@{
+    ViewData["Title"] = "Items";
+    Layout = "_LayoutAdmin";
+    bool specific = (ViewBag.menu == null);
+}
+
+    <h2 class="titles mb-5">Items @if (!specific) { 
+        <span>(<a asp-controller="Menus" asp-action="Details" asp-route-id="@ViewBag.menu.MenuId">@ViewBag.menu.Name</a>)</span>
+        }</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="custom-table table">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+           @if (specific)
+            {
+            <th>
+                @Html.DisplayNameFor(model => model.MenuName)
+            </th>
+            }
+            <th>
+                @Html.DisplayNameFor(model => model.Allergic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+    var type = item.isVegan ? "Vegan" : (item.isVegeterian? "Vegeterian":"N/A");
+    var allergic = item.Allergic ? "Yes" : "No";
+        <tr>
+            <td>
+                <input id="@item.Id" type="hidden" value="@item.priority"/>
+                <img src="/@item.ImagePath" width="100" height="100" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                <a asp-controller="Categories" asp-action="Details" asp-route-id="@item.CategoryId">@Html.DisplayFor(modelItem => item.CategoryName)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            @if (specific)
+            {
+                <td>
+                    <a asp-controller="Menus" asp-action="Details" asp-route-id="@item.MenuId">@Html.DisplayFor(modelItem => item.MenuName)</a>
+                </td>
+            }
+            <td>
+                @allergic
+            </td>
+            <td>
+                @type
+            </td>
+            <td>
+                <a role="link" class="btn  btn-primary mb-3" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                <a role="link" class="btn  btn-warning mb-3" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a role="link" class="btn  btn-danger mb-3" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

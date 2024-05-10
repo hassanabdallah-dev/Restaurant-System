@@ -1,0 +1,51 @@
+﻿@model List<Phenicienn.Models.AdminUser.AdminUser>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_LayoutAdmin";
+}
+
+<h2>Users</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+
+            <th>Account Status</th>
+
+            <th>Restaurant</th>
+            <th></th>
+        </tr>
+    </thead>
+    @foreach (var user in Model)
+    {
+        var active = user.active ? "Active" : "Not Active";
+
+        <tr>
+            <td>@Html.DisplayFor(userModel => user.UserName)</td>
+            <td>@active</td>
+            <td>
+                @if (active == "Active")
+                {
+                    if (user.Restaurant != 0)
+                    {
+                        <a asp-controller="Restaurants" asp-action="Details" asp-route-id="model.Restaurant">@ViewData["resto-" + user.Restaurant]</a>
+                    }
+                    else
+                    {
+                        <span>Not Set Yet</span>
+                    }
+                }
+                else
+                {
+                    <span>Not Set Yet</span>
+                }
+            </td>
+            <td>
+                @if (active == "Not Active")
+                {<form  asp-action="Activate" asp-route-id="@user.Id"><button class="btn btn-primary">Activate</button></form>}
+                <a role="link" class="btn  btn-warning mb-3" asp-action="Details" asp-route-id="@user.Id">Details</a>
+                <a role="link" class="btn  btn-danger mb-3" asp-action="Delete" asp-route-id="@user.Id">Delete</a>
+            </td>
+        </tr>
+    }
+</table>

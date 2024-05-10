@@ -1,0 +1,156 @@
+﻿@model Phenicienn.Models.User.LoginUser
+@{
+    ViewData["Title"] = "Login";
+}
+@{
+    if (ViewBag.Errors != null)
+    {
+        <div class="alert-danger">
+            @foreach (string error in ViewBag.Errors)
+            {
+                <p>@error</p>
+            }
+        </div>
+    }
+    else if (ViewBag.Success != null)
+    {
+        <div class="alert-info">
+            <p>@ViewBag.Success</p>
+        </div>
+    }
+}
+<h2 class="m-auto text-center mb-5">Login</h2>
+<div class="m-auto col-sm-8 mt-4" style="height:40%; border-radius:10px; padding:20px;">
+    <div class="card" style="padding:5px;border:none;">
+        <div class="card-body p-5">
+        <div class="form-group">
+            <form id="loginform" action="/Account/Login/Index" method="post">
+                <div class="form-group row">
+                    <label asp-for="Username" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10">
+
+                        <input asp-for="Username" class="form-control" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                </div>
+                    <div class="form-group row">
+                        <label asp-for="Password" class="col-sm-2 col-form-label"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-10 offset-sm-2">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                    </div>
+</form>
+        </div>
+    </div>
+        </div>
+</div>
+@section Scripts{
+    <script>
+        $("#loginform").on("beforesubmit", function (e) {
+            e.preventDefault();
+
+        })
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}
+@*<head>
+         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+         <link rel="stylesheet" href="/resources/demos/style.css">
+         <style>
+            #sortable { list-style-type: none; margin: 0; padding: 0;}
+            #sortable tr { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
+         </style>
+
+    </head>
+    <table id="sortable" class="table">
+        <tr id="1">
+            <td>1</td>
+            <td>2</td>
+        </tr>
+        <tr id="2">
+            <td>3</td>
+            <td>4</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>4</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>4</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>4</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>4</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>4</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>4</td>
+        </tr>
+    </table>
+    @section Scripts{
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+            $(document).ready(() => {
+                var list = null;
+                $("#sortable").children().sortable({
+                    placeholder: 'ui-state-highlight',
+                    helper: fixWidthHelper,
+                    update: (e, ui) => {
+                        list = new Array();
+                        $(".ui-sortable-handle").each((i, o) => {
+                            list.push($(o).attr('id'));
+                        });
+                        console.log(list);
+                    }
+                });
+            });
+
+            function fixWidthHelper(e, ui) {
+                ui.children().each(function () {
+                    $(this).width($(this).width());
+                });
+                return ui;
+            }
+        </script>
+    }*@

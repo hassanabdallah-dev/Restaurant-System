@@ -1,0 +1,27 @@
+﻿@inject Phenicienn.Areas.Admin.Services.IViewModelFactory viewmodel
+@{
+    List<Category> categories = await viewmodel.GetUserCategories();
+}
+<ul class="right-menu">
+    @foreach (var cat in categories)
+    {
+
+        <li class="right-menu-item">
+
+
+            <!--<a onclick="MenuPage('/User/Landing/Menu/@cat.CategoryId')">-->
+
+            <a onclick="MenuPage('/User/QRCodeRedirection/index/@cat.CategoryId')">
+
+
+                <i class="fas fa-plus"></i> @cat.Name
+            </a>
+        </li>
+    }
+</ul>
+
+<script>
+    function MenuPage(path) {
+        window.location.href = path;
+    }
+</script>

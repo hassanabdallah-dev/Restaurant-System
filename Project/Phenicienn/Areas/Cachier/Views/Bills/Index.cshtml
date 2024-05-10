@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Bills>
+<table class="table">
+    <thead>
+        <tr>
+            <th># Table</th>
+            <th>Ammout </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr id="row-@item.Id">
+                <td>@item.Table.TableNo</td>
+                <td>@item.Amount $</td>
+                <td>
+                    <button id="@item.Id" class="btn btn-link pay"><i class="fas fa-cash-register"></i></button>
+                    <button class="btn btn-link"><i class="fas fa-print"></i></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<style>
+    th{
+        font-size:25px !important;
+        font-weight:500 !important;
+    }
+    tr{
+        font-size:20px !important;
+        font-weight:500 !important;
+    }
+</style>
+@section Scripts{ 
+<script>
+    function removeBill(id) {
+        var row = $("#row-" + id);
+        row.hide(100, () => { row.remove() });
+    }
+    function deleteBill(id) {
+        $.ajax({
+            url: "/Cachier/Bills/Pay",
+            method: "post",
+            data: {
+                id: id,
+            },
+            success: data => {
+                removeBill(id);
+            },
+            error: err => {
+
+            }
+        });
+    }
+    $(document).ready(() => {
+        $(".pay").click(e => {
+            var id = e.currentTarget.id;
+            setTimeout(deleteBill(id), 1000);
+        });
+    });
+</script>
+}

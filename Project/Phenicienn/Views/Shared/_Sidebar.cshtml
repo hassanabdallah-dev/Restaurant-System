@@ -1,0 +1,31 @@
+﻿@{ 
+    var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
+}
+<div class="sidebar">
+    <div class="logo">
+        <h3 class="m-3 text-light">Menu</h3>
+    </div>
+    <div class="sidebar-wrapper" id="sidebar-wrapper">
+        @switch (role)
+        {
+            case "Admin":
+                <partial name="_AdminMenu" />
+                break;
+            case "SuperAdmin":
+                <partial name="_SuperAdminMenu" />
+                break;
+            case "Waiter":
+                <partial name="_WaiterMenu" />
+                break;
+            case "Kitchen":
+                <partial name="_KitchenMenu" />
+                break;
+            case "Cachier":
+                <partial name="_CachierMenu" />
+                break;
+            default:
+                break;
+        }
+
+    </div>
+</div>

@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Menu>
+
+@{
+    ViewData["Title"] = "Menus";
+}
+
+    <h2 class="titles mb-5">Menus</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="custom-table table">
+    <thead>
+        <tr>
+            <th>Menu</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a asp-action="Index" asp-controller="Items" asp-route-id="@item.MenuId">@item.Name</a>
+            </td>
+            <td>
+                <a role="link" class="btn  btn-primary mb-3" asp-action="Edit" asp-route-id="@item.MenuId">Edit</a> 
+                <a role="link" class="btn  btn-warning mb-3" asp-action="Details" asp-route-id="@item.MenuId">Details</a> 
+                <a role="link" class="btn  btn-danger mb-3" asp-action="Delete" asp-route-id="@item.MenuId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

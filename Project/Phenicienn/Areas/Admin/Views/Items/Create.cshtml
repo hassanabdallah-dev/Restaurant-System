@@ -1,0 +1,110 @@
+﻿@model Phenicienn.Areas.Admin.ViewModels.ItemViewModel
+
+@{
+    ViewData["Title"] = "Item - Create";
+}
+
+<h2 class="titles mb-5">Create</h2>
+
+<h4>Item</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form enctype="multipart/form-data" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div style="opacity:0;" class="form-group">
+                <label asp-for="MenuId" class="control-label"></label>
+                <select asp-for="MenuId" class="form-control">
+                    @foreach (var item in Model.menus)
+                    {
+                        <option value="@item.MenuId">@item.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="MenuId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control">
+                    @foreach (var item in Model.categories)
+                    {
+                        <option value="@item.CategoryId">@item.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <div id="fileupload" class="custom-file">
+                    <input name="Image" type="file" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div id="image"></div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <br />
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-secondary ">
+                        <input name="Type" type="radio" id="option1" value="1" autocomplete="off" > Vegan
+                    </label>
+                    <label class="btn btn-secondary ">
+                        <input name="Type" type="radio" id="option2" value="2" autocomplete="off" > Vegeterian
+                    </label>
+                    <label style="border-top-right-radius: 0.25rem;border-bottom-right-radius: 0.25rem;" class="btn btn-secondary active">
+                        <input name="Type" type="radio" id="option3" value="0" autocomplete="off" checked> None
+                    </label>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                    <label asp-for="Active"></label><br />
+                    <input id="active" asp-for="Active" checked/>
+                    <label for="active">Active</label>
+            </div>
+            <div class="form-group">
+                <select id="allergants" asp-for="Allergants" class="selectpicker" multiple>
+                    @foreach(var item in Model.AllAllergants)
+                    {
+                        <option value="@item.AllergantId">@item.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <select id="allergants" asp-for="Ingredients" class="selectpicker" multiple>
+                    @foreach(var item in Model.AllIngredients)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-area="Admin" asp-controller="Items" asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/adminedit.js"></script>
+}

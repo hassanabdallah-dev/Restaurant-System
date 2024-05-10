@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Phenicienn.Models.Restaurant>
+
+@{
+    ViewData["Title"] = "Restaurants";
+}
+
+<h2 class="titles mb-5">Restaurants</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="custom-table table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a role="link" class="btn  btn-primary mb-3" asp-action="Edit" asp-route-id="@item.RestaurantId">Edit</a> 
+                <a role="link" class="btn  btn-warning mb-3" asp-action="Details" asp-route-id="@item.RestaurantId">Details</a> 
+                <a role="link" class="btn  btn-danger mb-3" asp-action="Delete" asp-route-id="@item.RestaurantId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

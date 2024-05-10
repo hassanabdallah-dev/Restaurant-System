@@ -1,0 +1,107 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  
+
+    <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+  </PropertyGroup>
+  
+
+    <ItemGroup>
+      <Compile Remove="Migrations\20200908165126_AddBills.cs" />
+      <Compile Remove="Migrations\20200908165126_AddBills.Designer.cs" />
+      <Compile Remove="Migrations\20200908171043_DummyRemoveOrdStatus.cs" />
+      <Compile Remove="Migrations\20200908171043_DummyRemoveOrdStatus.Designer.cs" />
+      <Compile Remove="Migrations\20200908201055_AddBillRestaurant.cs" />
+      <Compile Remove="Migrations\20200908201055_AddBillRestaurant.Designer.cs" />
+    </ItemGroup>
+  
+
+    <ItemGroup>
+      <Content Remove="Areas\User\Views\QRCodeRedirection\index.cshtml" />
+    </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.Core" Version="2.31.0" />
+    <PackageReference Include="MessagingToolkit.QRCode" Version="1.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+    <PackageReference Include="QRCoder" Version="1.3.9" />
+    <PackageReference Include="SqlTableDependency" Version="8.5.8" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <PackageReference Include="ZXing.Net" Version="0.16.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Areas\Admin\Views\Categories\Create.cshtml" />
+    <None Include="Areas\Admin\Views\Categories\Delete.cshtml" />
+    <None Include="Areas\Admin\Views\Categories\Details.cshtml" />
+    <None Include="Areas\Admin\Views\Categories\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\Categories\Index.cshtml" />
+    <None Include="Areas\Admin\Views\Employees\Index.cshtml" />
+    <None Include="Areas\Admin\Views\h\Index.cshtml" />
+    <None Include="Areas\Admin\Views\Items\Create.cshtml" />
+    <None Include="Areas\Admin\Views\Items\Delete.cshtml" />
+    <None Include="Areas\Admin\Views\Items\Details.cshtml" />
+    <None Include="Areas\Admin\Views\Items\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\Items\Index.cshtml" />
+    <None Include="Areas\Account\Views\Login\Index.cshtml" />
+    <None Include="Areas\Admin\Views\Menus\Create.cshtml" />
+    <None Include="Areas\Admin\Views\Menus\Delete.cshtml" />
+    <None Include="Areas\Admin\Views\Menus\Details.cshtml" />
+    <None Include="Areas\Admin\Views\Menus\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\Menus\Index.cshtml" />
+    <None Include="Areas\Account\Views\Register\Index.cshtml" />
+    <None Include="Areas\Admin\Views\Restaurants\Create.cshtml" />
+    <None Include="Areas\Admin\Views\Restaurants\Delete.cshtml" />
+    <None Include="Areas\Admin\Views\Restaurants\Details.cshtml" />
+    <None Include="Areas\Admin\Views\Restaurants\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\Restaurants\Index.cshtml" />
+    <None Include="Areas\User\Views\Landing\Index.cshtml" />
+    <None Include="Areas\User\Views\Landing\Menu.cshtml" />
+    <None Include="Areas\User\Views\Landing\Privacy.cshtml" />
+    <None Include="Areas\User\Views\QRCodeRedirection\index.cshtml" />
+    <None Include="Areas\Waiter\Views\ManageTables\Index.cshtml" />
+    <None Include="Views\Error.cshtml" />
+    <None Include="Views\Shared\_CategoriesPartial.cshtml" />
+    <None Include="Views\Shared\_Home.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_LoginPartial.cshtml" />
+    <None Include="Views\Shared\_Menu.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="wwwroot\lib\popper\js\popper.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Account\Data\" />
+    <Folder Include="Areas\Account\Models\" />
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Cachier\Data\" />
+    <Folder Include="Areas\Cachier\Models\" />
+    <Folder Include="Areas\Kitchen\Data\" />
+    <Folder Include="Areas\Kitchen\Models\" />
+    <Folder Include="Areas\Manage\Data\" />
+    <Folder Include="Areas\Manage\Models\" />
+    <Folder Include="Areas\Manage\Services\" />
+    <Folder Include="Areas\User\Data\" />
+    <Folder Include="Areas\User\Models\" />
+    <Folder Include="Areas\Waiter\Data\" />
+    <Folder Include="Areas\Waiter\Models\" />
+  </ItemGroup>
+
+</Project>

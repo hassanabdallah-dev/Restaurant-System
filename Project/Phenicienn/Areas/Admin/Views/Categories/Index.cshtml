@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Phenicienn.Models.Category>
+
+@{
+    ViewData["Title"] = "Categories";
+}
+<h2 class="titles mb-5">Categories</h2>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</p>
+<table id="custom-table" class="table">
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <img src="/@item.ImagePath" width="100" height="100" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a role="link" class="btn  btn-primary mb-3" asp-action="Edit" asp-route-id="@item.CategoryId">Edit</a> 
+                <a role="link" class="btn btn-warning mb-3" asp-action="Details" asp-route-id="@item.CategoryId">Details</a> 
+                <a role="link" class="btn btn-danger mb-3" asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

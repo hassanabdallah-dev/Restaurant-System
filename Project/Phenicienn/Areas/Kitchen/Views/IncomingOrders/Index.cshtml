@@ -1,0 +1,143 @@
+﻿@using Phenicienn.Areas.Kitchen.ViewModels;
+@model IEnumerable<KitchenOrderViewModel>
+    <div id="orders">
+        @foreach (var item in Model)
+        {
+            <div class="card" id="card-@item.Id">
+                <div class="card-header" id="heading-@item.Id">
+                    <div class="mb-0 d-flex flex-row justify-content-between">
+                        <div class="order-details d-flex flex-column justify-content-between">
+                            <button class="tableno btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-@item.Id" aria-expanded="true" aria-controls="collapse-@item.Id">
+                                Table #@item.TableNo
+                            </button>
+                            <span class="item-comment">
+                                @item.Comment
+                            </span>
+                        </div>
+                        <div>
+                            <button data-id="@item.Id" type="submit" title="Ready!" class= "btn btn-link btn-ready">
+                                <i class="fas fa-concierge-bell"></i>
+                            </button>
+                            <button data-id="@item.Id" type="submit" title="Delete" class="btn btn-link btn-delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="collapse-@item.Id" class="collapse show" aria-labelledby="heading-@item.Id" data-parent="#orders">
+                    <div class="card-body">
+                        <table class="table table-responsive borderless">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var menuitem in item.items)
+                                {
+                                    <tr>
+                                        <td><img style="margin-bottom: 20px;width: 45%;height: auto;" width="200" height="200" src="@menuitem.ImagePath" /></td>
+                                        <td class="item-namee">@menuitem.Name</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+<style>
+    table td{
+        width:50%;
+    }
+    .borderless td, .borderless th {
+        border: none;
+    }
+    #orders{
+        width:85%;
+        margin:auto;
+    }
+    .item-namee {
+        color: #007bff;
+        font-weight: 600;
+        font-size: 20px;
+    }
+    button i {
+        font-size: 22px;
+    }
+    .item-comment {
+        display: inline-flex;
+        align-items: center;
+        padding-left: 40px;
+        font-size: 12px !important;
+    }
+    .order-details{
+        width:70%;
+        text-align:left;
+    }
+    .tableno{
+        width:fit-content;
+        text-decoration:none;
+    }
+    .card-header{
+        cursor:pointer;
+    }
+</style>
+@section Scripts{ 
+    <script>
+        function DeleteOrder(id) {
+            $.ajax({
+                url: "/Kitchen/IncomingOrders/Remove",
+                method: "post",
+                data: {
+                    id:id,
+                },
+                success: data => {
+                    $("#collapse-" + id).collapse('hide');
+                    var card = $("#card-" + id);
+                    card.hide(100, () => { card.remove() });
+                },
+                error: err => {
+
+                }
+            });
+        }
+        function OrderReady(id) {
+            $.ajax({
+                url: "/Kitchen/IncomingOrders/Ready",
+                method: "post",
+                data: {
+                    id: id,
+                },
+                success: data => {
+                    $("#collapse-" + id).collapse('hide');
+                    var card = $("#card-" + id);
+                    card.hide(100, () => { card.remove() });
+                },
+                error: err => {
+
+                }
+            });
+        }
+
+        $(document).ready(() => {
+            $(".card-header").click(e => {
+                if (e.target.type != "submit") {
+                    var id = e.currentTarget.id.substr(8);
+                    $("#collapse-" + id).collapse('toggle');
+                }
+            });
+            $(".btn-ready").click(e => {
+                var id = $(e.currentTarget).data('id');
+                OrderReady(id);
+            });
+            $(".btn-delete").click(e => {
+                var id = $(e.currentTarget).data('id');
+                DeleteOrder(id);
+            });
+        });
+    </script>
+}

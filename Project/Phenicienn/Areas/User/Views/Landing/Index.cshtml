@@ -1,0 +1,183 @@
+﻿
+@{
+    ViewData["Title"] = "Home";
+    ViewData["PrimaryColor"] = "#b70021";
+    Layout = "_Menu";
+}
+@section Styles{ 
+    <style>
+        .primaryColor {
+            color: @ViewData["PrimaryColor"];
+        }
+
+        .primaryBGColor {
+            background-color: @ViewData["PrimaryColor"];
+        }
+
+        .primaryBorder {
+            border: 1px solid @ViewData["PrimaryColor"];
+        }
+        .primaryBorderColor {
+            border-color:  @ViewData["PrimaryColor"];
+        }
+    </style>
+}
+            <!-- .Header  -->
+            <!-- Content Wrap  -->
+            <div class="content-wrap">
+                <div class="img-hero">
+                    <div>
+                        <img src="/img/slide3.jpg" alt="slider">
+                    </div>
+                    <div>
+                        <img src="/img/slide4.jpg" alt="slider">
+                    </div>
+                </div>
+                <div class="section-home you-might-like">
+                    <div class="heading-section">
+                        <div class="sa-title popcat">Recipes You Might Like...</div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="yml-carousel">
+                        <div class="yml-box">
+                            <div class="yml-img">
+                                <img src="/img/food9.jpg" alt="you might like">
+                            </div>
+                            <div class="yml-food-text">Chicken Fried Steak</div>
+                        </div>
+                        <div class="yml-box">
+                            <div class="yml-img">
+                                <img src="/img/food10.jpg" alt="you might like">
+                            </div>
+                            <div class="yml-food-text">Grilled Fish Tacos</div>
+                        </div>
+                        <div class="yml-box">
+                            <div class="yml-img">
+                                <img src="/img/food11.jpg" alt="you might like">
+                            </div>
+                            <div class="yml-food-text">Steak with Garlic</div>
+                        </div>
+                        <div class="yml-box">
+                            <div class="yml-img">
+                                <img src="/img/food12.jpg" alt="you might like">
+                            </div>
+                            <div class="yml-food-text">Harvest Salad</div>
+                        </div>
+                        <div class="yml-box">
+                            <div class="yml-img">
+                                <img src="/img/food13.jpg" alt="you might like">
+                            </div>
+                            <div class="yml-food-text">Cheesy Pizza</div>
+                        </div>
+                        <div class="yml-box">
+                            <div class="yml-img">
+                                <img src="/img/food14.jpg" alt="you might like">
+                            </div>
+                            <div class="yml-food-text">Teriyaki Chicken</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-home s-category">
+                    <div class="heading-section">
+                        <div class="sa-title popcat">Popular Categories</div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="home-category-list">
+                        <div class="home-box-category">
+                            <div class="home-text-category">
+                                <div class="bc-text">Quick and Easy</div>
+                            </div>
+                            <div class="home-image-category">
+                                <img src="/img/food1.jpg" alt="image-category">
+                            </div>
+                        </div>
+                        <div class="home-box-category">
+                            <div class="home-text-category">
+                                <div class="bc-text">Dinner Ideas</div>
+                            </div>
+                            <div class="home-image-category">
+                                <img src="/img/food2.jpg" alt="image-category">
+                            </div>
+                        </div>
+                        <div class="home-box-category">
+                            <div class="home-text-category">
+                                <div class="bc-text">Healthy</div>
+                            </div>
+                            <div class="home-image-category">
+                                <img src="/img/food3.jpg" alt="image-category">
+                            </div>
+                        </div>
+                        <div class="home-box-category">
+                            <div class="home-text-category">
+                                <div class="bc-text">Vegetarian</div>
+                            </div>
+                            <div class="home-image-category">
+                                <img src="/img/food4.jpg" alt="image-category">
+                            </div>
+                        </div>
+                        <div class="home-box-category">
+                            <div class="home-text-category">
+                                <div class="bc-text">Cakes and Baking</div>
+                            </div>
+                            <div class="home-image-category">
+                                <img src="/img/food5.jpg" alt="image-category">
+                            </div>
+                        </div>
+                        <div class="home-box-category">
+                            <div class="home-text-category">
+                                <div class="bc-text">World Cuisine</div>
+                            </div>
+                            <div class="home-image-category">
+                                <img src="/img/food6.jpg" alt="image-category">
+                            </div>
+                        </div>
+                        <div class="home-box-category">
+                            <div class="home-text-category">
+                                <div class="bc-text">Meal Type</div>
+                            </div>
+                            <div class="home-image-category">
+                                <img src="/img/food7.jpg" alt="image-category">
+                            </div>
+                        </div>
+                        <div class="home-box-category">
+                            <div class="home-text-category">
+                                <div class="bc-text">Chicken Recipes</div>
+                            </div>
+                            <div class="home-image-category">
+                                <img src="/img/food8.jpg" alt="image-category">
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class=" more-category">
+                            <div class="theme-button mcbutton">See More</div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="section-home home-banner">
+                    <img src="/img/banner.jpg">
+                </div>
+                -->
+                <!-- SUBSCRIBE -->
+                <div class="section-subscribe">
+                    <div class="subcontainer">
+                        <div class="subrow">
+                            <div class="subcol">
+                                <div class="section-title">SUBSCRIBE</div>
+                                <p class="textsub">Get news and food recipes every day</p>
+                                <div class="mail-subscribe-box">
+                                    <form name="subsribe">
+                                        <input class="form-control" name="user-email" placeholder="Enter email address" value="" type="email">
+                                        <button type="submit" class="submitsub"> <i class="fa fa-angle-right"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-subscribe">
+                        <img src="/img/food4.jpg" alt="banner">
+                    </div>
+                </div>
+                <!-- END SUBSCRIBE -->
+
+            </div>
+            <!-- .Content wrap  -->

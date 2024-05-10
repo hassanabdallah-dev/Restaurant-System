@@ -1,0 +1,103 @@
+﻿@model Phenicienn.Areas.Admin.ViewModels.ItemViewModel
+
+@{
+    ViewData["Title"] = "Item - Details";
+}
+
+    <h2 class="titles mb-5">Details</h2>
+
+<div>
+    <h4>Item</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </dt>
+        <dd class="col-sm-10">
+            <a asp-controller="Categories" asp-action="Details" asp-route-id="@Html.DisplayFor(model => model.CategoryId)">@Html.DisplayFor(model => model.CategoryName)</a>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MenuName)
+        </dt>
+        <dd class="col-sm-10">
+            <a asp-controller="Menus" asp-action="Details" asp-route-id="@Html.DisplayFor(model => model.MenuId)">@Html.DisplayFor(model => model.MenuName)</a>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ImagePath)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="/@Model.ImagePath" width="200" height="200" />
+
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Active)
+        </dt>
+        <dd class="col-sm-10">
+            @{ var active = Model.Active ? "Active" : "Not Active";}
+            @active
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Allergic)
+        </dt>
+        <dd class="col-sm-10">
+            @{ var allergic = Model.Allergic ? "Yes" : "No";}
+            @allergic
+        </dd>
+    </dl>
+</div>
+@if (allergic == "Yes")
+{
+    <table class="custom-table table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var allergant in Model.DetailAllergants)
+            {
+                <tr>
+                    <td>
+                        @allergant.Name
+                    </td>
+                    <td>
+                        @allergant.Description
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+        }
+        <div>
+            <a asp-area="Admin" asp-controller="Items" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+            <a asp-area="Admin" asp-controller="Items" asp-action="Index">Back to List</a>
+        </div>

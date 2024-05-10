@@ -1,0 +1,138 @@
+﻿@model IEnumerable<Phenicienn.Models.Item>
+@{
+    ViewData["Title"] = "Index";
+    ViewData["PrimaryColor"] = "#b70021";
+    Layout = "_Menu";
+    var cats = (Dictionary<int, string>)ViewBag.cats;
+
+  
+}
+@section Styles{
+    <style>
+        .primaryColor {
+            color: @ViewData["PrimaryColor"];
+        }
+
+        .primaryBGColor {
+            background-color: @ViewData["PrimaryColor"];
+        }
+
+        .primaryBorder {
+            border: 1px solid @ViewData["PrimaryColor"];
+        }
+        .primaryBorderColor {
+            border-color:  @ViewData["PrimaryColor"];
+        }
+        .btn-inf:hover{
+            color: @ViewData["PrimaryColor"];
+            opacity:0.8;
+        }
+    </style>
+}
+<div class="modal fade" id="ingredientModal" tabindex="-1" role="dialog" aria-labelledby="ingredientModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ingredientModalTitle">Ingredients</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content-wrap">
+    <div class="heading-page">
+        Food Gallery
+        <div class="back-btn">
+            <div class="icon-back"><a asp-area="User" asp-controller="Home" asp-action="Index"><i class="fas fa-chevron-left"></i></a></div>
+
+        </div>
+    </div>
+
+    <div class="gallery-section">
+
+        <div class="row-filter">
+            <!-- filter -->
+            <div class="filter-gallery">
+                <button id="all" onclick="loadAllItems()" data-filter="gallery-no-filter" class="filter-button">All</button>
+    <!--<button data-filter="gallery-bread" class="filter-button">Bread</button>
+    <button data-filter="gallery-chicken" class="filter-button">Chicken</button>
+    <button data-filter="gallery-salads" class="filter-button">Salads</button>
+    <button data-filter="gallery-pizza" class="filter-button">Pizza</button>-->
+                @foreach (KeyValuePair<int, string> cat in cats)
+                {
+                    <button id="cat-@cat.Key cat" onclick="loadCategory(@cat.Key)" data-filter="gallery-bread" class="filter-button">@cat.Value</button>
+                }
+            </div>
+            <!-- /filter -->
+        </div>
+
+
+        <!---------------------------------------------------------------------------------------------------------------------------------------------->
+
+        <div class="container main">
+            <div class="menu-cards shadow-lg">
+
+                @foreach (var item in Model)
+                {
+                    <div id="item-@item.ItemId" class="card shadow-lg menu-item">
+                        
+                        <div class="item-remove-btn item-remove-btn-main"><i class="fa fa-trash"></i></div>
+                        <div class="inner-card">
+                            <div class="item-main">
+                                <div class="item-photo-container">
+                                    <img src="/@item.ImagePath" class="item-photo">
+                                </div>
+                                <div class="item-text-container">
+                                    <div class="item-text">
+                                        <div class="item-detail">
+                                            <div class="item-name">@item.Name</div>
+                                            <div class="item-description text-justify">@item.Description</div>
+                                        </div>
+                                        <div class="item-price">
+                                            <div class="item-quantity-outer">
+                                                <span style="font-size:17px;" class="item-pprice">@item.Price€</span>
+                                                <div class="item-quantity-container">
+                                                    <div class="item-quantity">
+                                                        <span class="minus minus-main"><i class="minus fa fa-minus-square"></i></span>
+                                                        <div class="item-quantity-component item-number">0</div>
+                                                        <span class="plus plus-main"><i class="fa fa-plus-square"></i></span>
+                                                    </div>
+                                                    <button class="btn btn-add">ajouter</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{ 
+<script>
+    $(".menu-cards").on("click", ".btn-inf",function (event) {
+        var button = $(event.currentTarget);
+        var recipient = button.data('ing');
+        var modal = $('#ingredientModal');
+        modal.find('.modal-body').html(recipient);
+    });
+    $(".menu-cards").on("click",".inglink",e => {
+        var ing = $(e.currentTarget).html();
+        var modal = $('#ingredientModal');
+        modal.find('.modal-body').html(ing);
+        modal.modal('show');
+    });
+</script>
+}

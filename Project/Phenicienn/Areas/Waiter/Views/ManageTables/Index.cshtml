@@ -1,0 +1,573 @@
+﻿@model IEnumerable<Phenicienn.Areas.Waiter.ViewModels.TableViewModel>
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Index";
+
+}
+<head>
+    <style>
+        .modal-dialog{
+            height:10%;
+        }
+        .modal-content{
+            max-height:85%;
+        }
+        .modal-body{
+            overflow-y:auto;
+        }
+        btn-primary {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .table-card {
+            transition: opacity .5s;
+            cursor: pointer;
+        }
+
+            .table-card:focus {
+                opacity: .7;
+            }
+
+        * {
+            user-select: none;
+            box-sizing: border-box;
+        }
+
+        .table-details {
+            font-size: 17px;
+        }
+
+        .context-item {
+            font-size: 70%;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted black;
+        }
+
+        .fixed-tabs {
+            position: fixed;
+            top: 0;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+        }
+
+        .main-frame {
+            margin: 20px auto auto auto;
+            display: inline-block;
+            padding: 30px;
+        }
+
+        .tables-wrapper {
+            max-width: 95%;
+            margin: 0 auto;
+            display: grid;
+            grid-gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px,2fr));
+            justify-items: center;
+            overflow: hidden;
+        }
+
+        .table-card {
+            width: 300px;
+            height: 200px;
+            border-radius: 10px;
+            margin: 25px;
+            color: white;
+            font-size: 20px;
+            padding: 15px;
+        }
+
+        .context {
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+            .context:after {
+                content: '\2807';
+                color: white;
+            }
+
+            .context:focus {
+                outline: none;
+            }
+
+            .context:hover {
+                opacity: 0.8;
+            }
+
+        .occupied {
+            background-image: -webkit-linear-gradient(90deg, #de0e0e 0%, #f45656 100%);
+        }
+
+        .available {
+            background-image: -webkit-linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .reserved {
+            background-image: -webkit-linear-gradient(90deg, #f6521d 0%, #f18561 100%);
+        }
+
+        .show {
+            visibility: visible;
+        }
+    </style>
+</head>
+
+<partial name="_ReserveModal" />
+<partial name="_OrdersModal" />
+<div>
+    <div class="tables-wrapper d-print-block align-items-center">
+        @{ int i = 0;}
+        @foreach (var item in Model)
+        {
+            string status = item.status == 0 ? "available" : (item.status == 1 ? "occupied" : "reserved");
+            ++i;
+            <div id="card-@item.Id" class="card table-card d-inline-flex flex-column justify-content-between align-items-center @status">
+                <div class="d-flex justify-content-end position-absolute w-100">
+                    <div class="dropdown">
+                        <a id="context-@item.Id" class="context btn-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        </a>
+                        <div id="dropdown-@item.Id" class="dropdown-menu dropdown-menu-right" aria-labelledby="context-@item.Id">
+                            @if (status == "available")
+                            {
+                                <button onclick="Occupy(@item.Id, @item.capacity);" class="dropdown-item btn btn-link">Occupy Table</button>
+                                <button class="dropdown-item btn btn-link" data-id="@item.Id" data-toggle="modal" data-target="#exampleModal">Reserve</button>
+                            }
+                            else if (status == "occupied")
+                            {
+                                <button class="dropdown-item btn btn-link" onclick="ShowOrders(@item.Id);">Orders</button>
+                                <button class="dropdown-item btn btn-link" onclick="Free(@item.Id, @item.capacity );">Free Table</button>
+                            }
+                            else
+                            {
+                                <button class="dropdown-item btn btn-link" onclick="Free(@item.Id, @item.capacity );">Cancel Reservation</button>
+                                <button onclick="Occupy(@item.Id, @item.capacity);" class="dropdown-item btn btn-link">Occupy Table</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <h2 class="table-no mb-0">
+                    Table @item.TableNo
+                </h2>
+                @if (status == "occupied")
+                {
+                    <div id="occupied-@item.Id" class="w-100">
+
+                        <div class="table-details w-100 lst-ord">
+                            <span id="lst-ord-@item.Id">
+                                @if (item.LastOrder != "")
+                                {
+                                    @Html.Raw("Last Order " + item.LastOrder);
+                                }
+                                else
+                                {
+                                    @Html.Raw("Last Order N/A");
+                                }
+                            </span>
+                        </div>
+
+                        <div id="pending-@item.Id" class="table-details w-100 d-flex justify-content-start">
+                            @if (item.PendingOrdersCount != 0)
+                            {
+                                @Html.Raw(@item.PendingOrdersCount + " Orders Pending");
+                            }
+                            else
+                            {
+                                @Html.Raw("No Orders Pending");
+                            }
+                        </div>
+                    </div>
+                }
+                else if (status == "available")
+                {
+                    <div id="available-@item.Id" class="w-100">
+                        <div id="cap-@item.Id" data-cap="@item.capacity" class="table-details w-100">
+                            <span>
+                                <i class="fas fa-user-friends"></i> @item.capacity
+                            </span>
+                        </div>
+                        <div id="av-@item.Id" class="table-details w-100">
+                            <span>
+                                <i class="fas fa-check"></i> Available
+                            </span>
+                        </div>
+                    </div>
+                }
+                else
+                if (item.Reservation != "")
+                {
+                    <div id="reserved-@item.Id" class="w-100">
+                        <div class="table-details w-100">
+                            <span>
+                                <i class="fas fa-user-friends"></i> @item.capacity
+                            </span>
+                        </div>
+                        <div class="table-details w-100">
+                            <span>
+                                Reserved @@ @item.Reservation
+                            </span>
+                        </div>
+                        <div class="table-details w-100">
+                            <span>
+                                For @item.nb_people <i class="fas fa-user-friends"></i>
+                            </span>
+                        </div>
+                        <div class="table-details w-100">
+                            <span>
+                                By @item.Name
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+@section Scripts {
+
+    <script>
+        function Occupy(id, c) {
+            $("div.sidebar-overlay").addClass("show");
+            $("div.loading-overlay").addClass("show");
+            $.ajax({
+                url: "/Waiter/ManageTables/Occupy",
+                method: "POST",
+                data: {
+                    id: id,
+                },
+                success: data => {
+                    console.log(data);
+                    $("#card-" + id).removeClass("available");
+                    $("#card-" + id).removeClass("reserved");
+                    $("#card-" + id).addClass("occupied");
+                    $("#available-" + id).remove();
+                    $("#reserved-" + id).remove();
+                    $("#card-" + id).append(
+                        '<div id="occupied-' + id + '" class="w-100"><span>Last Order N/A</span><div id="pending-' + id + '" class="table-details w-100 d-flex justify-content-start">No Orders Pending</div></div>'
+                    );
+                    $("#dropdown-" + id).html(
+                        '<button onclick="Free(' + id + ',' + c + ');" class="dropdown-item btn btn-link">Free Table</button>' +
+                        '<button onclick="Occupy(' + id + ',' + c + ');" class="dropdown-item btn btn-link">Occupy Table</button><button class="dropdown-item btn btn-link" onclick="ShowOrders(' + id + ');">Orders</button>'
+                    );
+                    $("div.sidebar-overlay").removeClass("show");
+                    $("div.loading-overlay").removeClass("show");
+                },
+                error: error => {
+                    console.log("error occured");
+                    $("div.sidebar-overlay").removeClass("show");
+                    $("div.loading-overlay").removeClass("show");
+                }
+            });
+        }
+        function Free(id, c) {
+            $("div.sidebar-overlay").addClass("show");
+            $("div.loading-overlay").addClass("show");
+            $.ajax({
+                url: "/Waiter/ManageTables/Free",
+                method: "POST",
+                data: {
+                    id: id,
+                },
+                success: data => {
+                    console.log(data);
+                    $("#card-" + id).removeClass("occupied");
+                    $("#card-" + id).removeClass("reserved");
+                    $("#card-" + id).addClass("available");
+                    $("#occupied-" + id).remove();
+                    $("#reserved-" + id).remove();
+                    $("#card-" + id).append(
+                        '<div id="available-' + id + '" class="w-100"><div id="cap-' + id + '" data-cap="'+c+'" class="table-details w-100"><span><i class="fas fa-user-friends"></i> ' + c + '</span></div><div id="av-' + id + '" class="table-details w-100"><span><i class="fas fa-check"></i> Available</span></div></div>'
+                    );
+                    $("#dropdown-" + id).html(
+                        '<button onclick="Occupy(' + id + ',' + c + ');" class="dropdown-item btn btn-link">Occupy Table</button><button class="dropdown-item btn btn-link" data-toggle="modal" data-target="#exampleModal" data-id="' + id + '" >Reserve</button>'
+                    );
+                    $("div.sidebar-overlay").removeClass("show");
+                    $("div.loading-overlay").removeClass("show");
+
+                },
+                error: error => {
+                    console.log("error occured");
+                    $("div.sidebar-overlay").removeClass("show");
+                    $("div.loading-overlay").removeClass("show");
+
+                }
+            });
+        }
+        function ShowOrders(id) {
+            $("div.sidebar-overlay").addClass("show");
+            $("div.loading-overlay").addClass("show");
+            $.ajax({
+                dataType:"json",
+                url: "/Waiter/ManageOrders/getOrdersJsonByTable",
+                data: {
+                    "id":id
+                },
+                success: data => {
+                    console.log(data);
+                    var orders = "";
+                        for (var i = 0; i < data.length; i++){
+                            orders = `
+                        <div class="card" id="order-`+ data[i].Order_Id + `">
+                        <div class="card-header">
+                            <a id="toggle-`+data[i].Order_Id + `"  class="collapsible-order btn btn-link w-100"  data-toggle="collapse" data-target="collapse-`+ data[i].Order_Id + `" aria-expanded="false" aria-controls="collapse-` + data[i].Order_Id + `">
+                            <div class="w-100 d-flex flex-row justify-content-between">
+                                <div class="d-flex flex-column justify-content-between">
+                                    <h5 class="order-heading">`+ data[i].OrdersItems.length + ` Items</h5>
+                                    `+ data[i].HumanDate + `
+                                </div>
+                                <div class="h-100">
+                                    <button type="submit" data-tableid="`+ id + `"  onclick="Validate(` + data[i].Order_Id + `);" class="validate btn btn-primary val-` + data[i].Order_Id +`">Validate</button>
+                                    <button type="submit" data-tableid="`+ id + `" onclick="Cancel(` + data[i].Order_Id + `);" class="ml-3 validate btn btn-danger val-` + data[i].Order_Id +`">Cancel</button>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+
+                        <div id="collapse-`+ data[i].Order_Id + `" class="collapse show" aria-labelledby="order-` + data[i].Order_Id + `" data-parent="#order">
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                        <th>
+                                        </th>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Quantity
+                                        </th>
+                                        <th>
+                                            Price
+                                        </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>`;
+                            for (var j = 0; j < data[i].OrdersItems.length; j++) {
+                                orders += `<tr><td><img class="item-image" src="`+ data[i].OrdersItems[j].Item.ImagePath+`" /></td>
+                                            <td>`+ data[i].OrdersItems[j].Item.Name +`</td>
+                                            <td>`+ data[i].OrdersItems[j].Quantity +`</td>
+                                            <td>`+ data[i].OrdersItems[j].Item.Price +`</td>
+                                        </tr>`;
+                            }
+                        }
+                            orders += `
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                    console.log(orders);
+                        $(".order").html(orders);
+                        $("div.sidebar-overlay").removeClass("show");
+                        $("div.loading-overlay").removeClass("show");
+                        $("#orders").modal("show");
+                },
+                error: err => {
+                    console.log(err);
+                    $("div.sidebar-overlay").removeClass("show");
+                    $("div.loading-overlay").removeClass("show");
+                }
+            });
+        }
+        function Mycollapse(id) {
+            $('#collapse-'+id).collapse('toggle');
+        }
+        function Reserve(capacity) {
+            var id = $("#TableId").val();
+            var cap = $("#nb_people").val();
+            var c = capacity;
+            var res = $("#reservation").val();
+            var name = $("#name").val();
+            $("div.sidebar-overlay").addClass("show");
+            $("div.loading-overlay").addClass("show");
+            $.ajax({
+                url: "/Waiter/ManageTables/Reserve",
+                method: "post",
+                data: {
+                    nb_people: cap,
+                    id: id,
+                    reservation: res,
+                    name: name,
+                },
+                success: data => {
+                    console.log(data);
+                    $("#card-" + id).removeClass("available");
+                    $("#card-" + id).removeClass("occupied");
+                    $("#card-" + id).addClass("reserved");
+                    $("#occupied-" + id).remove();
+                    $("#available-" + id).remove();
+                    $("#card-" + id).append(
+                        '<div id="reserved-' + id + '" class="w-100"><div class="table-details w-100"><span><i class=" fas fa-user-friends"></i> ' + c + '</span></div><div class="table-details w-100"><span> Reserved @@ ' + tConvert(res) + '</span></div><div class="table-details w-100"><span>For ' + cap +' <i class="fas fa-user-friends"></i></span></div><div class="table-details w-100"><span>By '+name+'</span></div></div>'
+                    );
+                    $("#dropdown-" + id).html(
+                        '<button onclick="Free(' + id + ',' + c + ');" class="dropdown-item btn btn-link">Cancel Reservation</button><button onclick="Occupy(' + id + ',' + c + ');" class="dropdown-item btn btn-link">Occupy Table</button>'
+                    );
+                    $("div.sidebar-overlay").removeClass("show");
+                    $("div.loading-overlay").removeClass("show");
+                },
+                error: error => {
+                    console.log(error);
+                    $("div.sidebar-overlay").removeClass("show");
+                    $("div.loading-overlay").removeClass("show");
+
+                }
+            });
+            $('#exampleModal').modal('hide')
+        }
+        function Validate(id) {
+            $("div.sidebar-overlay").addClass("show");
+            $("div.loading-overlay").addClass("show");
+            $("#orders").modal('toggle');
+            $.ajax({
+                method: "post",
+                dataType: "json",
+                url: "/Waiter/ManageOrders/Validate",
+                data: {
+                    OId: id
+                },
+                success: data => {
+                    setTimeout(() => {
+                        $("#orders").modal('show');
+                        $("#collapse-" + id).collapse('hide');
+                        $("div.sidebar-overlay").removeClass("show");
+                        $("div.loading-overlay").removeClass("show");
+                        if (data.message == "success") {
+                            setTimeout(() => {
+                                $("#collapse-" + id).collapse('hide');
+                                var par = $("#order-" + id);
+                                par.hide(100, function () { par.remove(); });
+                            }, 400);
+                            var tableid = $(".val-" + id).data('tableid');
+                            $("#pending-" + tableid).html(data.pending);
+                            console.log($("#lst-ord-" + tableid));
+                            $("#lst-ord-" + tableid).html(data.lastOrder);
+                        }
+                    }, 500);
+                },
+                error: err => {
+                    setTimeout(() => {
+                        $("#orders").modal('show');
+                        $("#collapse-" + id).collapse('hide');
+                        $("div.sidebar-overlay").removeClass("show");
+                        $("div.loading-overlay").removeClass("show");
+                    }, 500);
+                }
+            });
+        }
+        function Cancel(id) {
+            $("div.sidebar-overlay").addClass("show");
+            $("div.loading-overlay").addClass("show");
+            $("#orders").modal('toggle');
+            $.ajax({
+                method: "post",
+                dataType: "json",
+                url: "/Waiter/ManageOrders/Cancel",
+                data: {
+                    OId: id
+                },
+                success: data => {
+                    setTimeout(() => {
+                        $("#orders").modal('show');
+                        $("#collapse-" + id).collapse('hide');
+                        $("div.sidebar-overlay").removeClass("show");
+                        $("div.loading-overlay").removeClass("show");
+                        if (data.message == "success") {
+                            setTimeout(() => {
+                                $("#collapse-" + id).collapse('hide');
+                                var par = $("#order-" + id);
+                                par.hide(100, function () { par.remove(); });
+                            }, 400);
+                            var tableid = $(".val-" + id).data('tableid');
+                            $("#pending-" + tableid).html(data.pending);
+                            console.log($("#lst-ord-" + tableid));
+                            $("#lst-ord-" + tableid).html(data.lastOrder);
+                        }
+                    }, 500);
+                },
+                error: err => {
+                    setTimeout(() => {
+                        console.log(err);
+                        $("#orders").modal('show');
+                        $("#collapse-" + id).collapse('hide');
+                        $("div.sidebar-overlay").removeClass("show");
+                        $("div.loading-overlay").removeClass("show");
+                    }, 500);
+                }
+            });
+        }
+
+        function tConvert(time) {
+            // Check correct time format and split into components
+            time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+            if (time.length > 1) { // If time format correct
+                time = time.slice(1);  // Remove full string match value
+                time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+                time[0] = +time[0] % 12 || 12;
+                if (time[0] < 10)
+                    return '0'+time.join('');
+                // Adjust hours
+            }
+            return time.join(''); // return adjusted time or original string
+        }
+        $(document).ready(function () {
+            $("#order").on("click", ".collapsible-order",e => {
+                var id = e.currentTarget.id.substr(7);
+                if (e.target.type != "submit") {
+                    Mycollapse(id);
+                }
+            });
+            $("#resFormbtn").click(() => {
+                var cap = $("#cap-" + $("#TableId").val()).data("cap");
+                Reserve(cap);
+            });
+            $('#exampleModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var modal = $(this);
+                var cap = button.data('cap');
+                var id = button.data('id');
+                modal.find('#nb_people').attr('max', cap);
+                modal.find('.ResTableId').val(id);
+            });
+            $(window).scroll(function () {
+                var location = $(this).scrollTop();
+                if (location > 85) {
+                    $(".tabs-container").addClass("fixed-tabs");
+                    $(".main-container").css("padding-top", "50px");
+                }
+                else {
+                    $(".tabs-container").removeClass("fixed-tabs");
+                    $(".main-container").css("padding-top", "0px");
+                }
+            });
+            $("a.btn.btn-link").click(function () {
+                $("a.btn.btn-link.active").removeClass("active");
+                $(this).addClass("active");
+
+            });
+            $(".table-card").on("taphold", function () {
+                alert("taphold");
+            });
+        });
+    </script>
+}

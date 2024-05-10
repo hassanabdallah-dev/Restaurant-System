@@ -1,0 +1,168 @@
+﻿@model Phenicienn.Areas.Admin.ViewModels.ItemViewModel
+
+@{
+    ViewData["Title"] = "Item - Edit";
+    Model.Type = Model.isVegan ? 1 : (Model.isVegeterian ? 2 : 0);
+}
+
+<h2 class="titles mb-5">Edit</h2>
+
+<h4>Item</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form enctype="multipart/form-data" asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control">
+                    @foreach (var item in Model.categories)
+                    {
+                        @if (item.CategoryId == Model.CategoryId)
+                        {
+                            <option value="@item.CategoryId" selected>@item.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@item.CategoryId">@item.Name</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MenuId" class="control-label"></label>
+                <select asp-for="MenuId" class="form-control">
+                    @foreach (var item in Model.menus)
+                    {
+                        @if (item.MenuId == Model.MenuId)
+                        {
+                            <option value="@item.MenuId" selected>@item.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@item.MenuId">@item.Name</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="MenuId" class="text-danger"></span>
+            </div>
+            <div id="imageupload" style="display:none;" class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <div id="fileupload" class="custom-file">
+                    <input name="Image" type="file" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <button class="btn btn-primary mb-3" id="change">Change</button>
+            <div id="image">
+                <img class="mb-3" src="/@Model.ImagePath" width="200" height="200" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <br />
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        @if (Model.Type == 1) {
+                            <label class="btn btn-secondary active ">
+                                <input type="radio" name="Type" id="option1" value="1" autocomplete="off" checked>
+                                Vegan
+                            </label>
+                        }
+                        else {
+                            <label class="btn btn-secondary ">
+                                <input type="radio" name="Type" id="option1" value="1" autocomplete="off" >
+                                Vegan
+                            </label>
+                        }
+                        @if (Model.Type == 2)
+                        {
+                            <label class="btn btn-secondary active">
+                                <input type="radio" name="Type" id="option2" value="2" autocomplete="off" checked>
+                                Vegeterian
+                            </label>
+                        }
+                        else
+                        {
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="Type" id="option2" value="2" autocomplete="off">
+                                Vegeterian
+                            </label>
+                        }
+
+                        @if (Model.Type == 0)
+                        {
+                            <label style="border-top-right-radius: 0.25rem;border-bottom-right-radius: 0.25rem;" class="btn btn-secondary active">
+                                <input type="radio" name="Type" id="option3" value="0" autocomplete="off" checked>
+                                None
+                            </label>
+                        }
+                        else
+                        {
+                            <label style="border-top-right-radius: 0.25rem;border-bottom-right-radius: 0.25rem;" class="btn btn-secondary">
+                                <input type="radio" name="Type" id="option3" value="0" autocomplete="off">
+                                None
+                            </label>
+                        }
+
+                        <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Active"></label><br />
+                @if (Model.Active)
+                {
+                    <input id="active" asp-for="Active" checked />
+                }
+                else
+                {
+                    <input id="active" asp-for="Active" />
+                }
+                <label for="active">Active</label>
+            </div>
+            <div class="form-group">
+                <select id="allergants" asp-for="Allergants" class="selectpicker" multiple>
+                    @foreach (var item in Model.AllAllergants)
+                    {
+                        @if (Model.Allergants.Contains(item.AllergantId))
+                        {
+                            <option value="@item.AllergantId" selected>@item.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@item.AllergantId">@item.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-area="Admin" asp-controller="Items" asp-action="Index">Back to List</a>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/admin.js"></script>
+    
+}
